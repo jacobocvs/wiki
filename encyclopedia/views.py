@@ -46,6 +46,11 @@ def new_entry(request):
         content = request.POST.get('content', '')
         entry = f"# {title}\n\n{content}"
 
+        # Check if an entry with the same title already exists
+        existing_entry = get_entry(title)
+        if existing_entry is not None:
+            return HttpResponse("An entry with this title already exists. Please choose a different title.")
+
         if title and content:
             save_entry(title, entry)
             return redirect('entry', title=title)
